@@ -1,7 +1,7 @@
 import pandas as pd
 import re
 
-INPUT_PATH = "data/raw/arxiv_abstracts.csv"
+INPUT_PATH = "data/raw/arxiv_1990_2014.csv"
 OUTPUT_PATH = "data/processed/arxiv_abstracts_clean.csv"
 
 df = pd.read_csv(INPUT_PATH)
