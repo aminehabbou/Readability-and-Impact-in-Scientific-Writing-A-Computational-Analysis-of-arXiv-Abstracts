@@ -9,21 +9,30 @@ FIELDS = {
     "mathematics": "cat:math.*",
 }
 
-TARGET_START = 1990
-TARGET_END = 2014
+TARGET_START = 2010
+TARGET_END = 2018
 
 records = []
 
-for field_name, query in FIELDS.items():
+# Construct date strings for arXiv query
+# arXiv uses YYYYMMDD format
+start_date_str = f"{TARGET_START}0101"
+end_date_str = f"{TARGET_END}1231"
+
+for field_name, field_query in FIELDS.items():
     print(f"\nCollecting {field_name} papers...")
+
+    # Include date range in query using submittedDate
+    query = f"{field_query} AND submittedDate:[{start_date_str} TO {end_date_str}]"
 
     search = arxiv.Search(
         query=query,
-        max_results=2000,  # large pool
+        max_results=1000,  # large pool
         sort_by=arxiv.SortCriterion.SubmittedDate,
-        sort_order=arxiv.SortOrder.Ascending,
+        sort_order=arxiv.SortOrder.Descending,  # newest first (2018 -> 2015)
     )
 
+    count_field = 0
     for result in tqdm(search.results()):
         year = result.published.year
 
@@ -38,15 +47,15 @@ for field_name, query in FIELDS.items():
                     "year": year,
                 }
             )
+            count_field += 1
 
-        # stop when enough papers collected
-        if len([r for r in records if r["field"] == field_name]) >= 1000:
+        if count_field >= 1000:  # stop when enough papers collected per field
             break
 
         time.sleep(0.4)  # avoid arXiv rate limits
 
-
 df = pd.DataFrame(records)
+print(df.head())
 
 OUTPUT_PATH = "data/raw/arxiv_1990_2014.csv"
 
