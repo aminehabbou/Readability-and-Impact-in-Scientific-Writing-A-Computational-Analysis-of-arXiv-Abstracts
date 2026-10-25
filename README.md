@@ -325,8 +325,10 @@ Please respect the data sources' terms of use and API policies when collecting o
 
 ## 👨‍💻 Author
 
-**Amine Habbou**  
+**Amine Habbou**
+Master's Student in Data Engineering
 Constructor University
+Bremen, Germany
 
 **Project:** *Readability and Impact in Scientific Writing: A Computational Analysis of arXiv Abstracts*  
 **Context:** Academic research project · 15 May 2026
